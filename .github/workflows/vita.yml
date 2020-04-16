@@ -27,7 +27,7 @@ jobs:
 
     - name: Run plots
       run: |
-        export PYTHONPATH=modules                                               # Location of python modules
+        export PYTHONPATH=.                                                     # Location of python modules
         export VITADATA=data                                                    # Location of machine configurations
 
         python3 tests/2Dprojections/test1a-LFS-midplane.py             --imageFile out/test1a-LFS-midplane.svg
