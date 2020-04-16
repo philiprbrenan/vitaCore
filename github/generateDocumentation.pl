@@ -18,7 +18,10 @@ my @errors;
 makePath($docs);
 clearFolder($docs, 99);
 
-my @files = searchDirectoryTreesForMatchingFiles($modules, qw(.py));            # Modules to document
+my @files =                                                                     # Files to extract documentation from
+  sort {fn($a) cmp fn($b)}                                                      # Sort by file name
+  grep {!m/__init__/}                                                           # Ignore init files
+  searchDirectoryTreesForMatchingFiles($modules, qw(.py));                      # Modules to document
 
 #say STDERR qx(/home/phil/.local/bin/pycco -d $docs -ie $files);
 
@@ -29,4 +32,22 @@ for my $source(@files)
   push @errors, $r->errors->@*;
  }
 
-owf(fpe($docs, qw(aaaErrors txt)), join "\n", @errors);
+if (1)                                                                          # Create an index file
+ {my @h;
+  for my $source(@files)
+   {my $f = fpe(fn($source), q(html));
+    push @h, qq(<p><a href="$f">$f</a></p>)
+   }
+
+  my $h = join "\n", @h, map {qq(<p>$_</p>)} @errors;
+
+  owf(fpe($docs, qw(index html)), <<END);
+<html>
+<meta charset="utf-8"/>
+<style></style>
+<body>
+$h
+</body>
+</html>
+END
+ }
