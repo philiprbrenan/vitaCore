@@ -9,11 +9,10 @@ use warnings FATAL => qw(all);
 use strict;
 use GitHub::Crud;
 
-my ($source, $target, $token) = map {$_ // ''} @ARGV;
-
+my ($userRepo, $source, $target, $token) = map {$_ // ''} @ARGV;
+my ($user, $repo) = split m(/), $userRepo, 2;
 say STDERR "Upload source: $source, to: $target, length:", length($token);
 
 if ($source and $target)                                                        # Upload named folder to GitHub
- {GitHub::Crud::writeFolderUsingSavedToken
-   (q(philiprbrenan), q(vita), $target, $source, $token);
+ {GitHub::Crud::writeFolderUsingSavedToken($user, $repo, $target, $source, $token);
  }
