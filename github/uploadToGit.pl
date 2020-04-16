@@ -27,6 +27,14 @@ lll qx(perl $docx);                                                             
 my @h = qw(.html .css);                                                         # File types we want to upload to web page
 my @t = qw(.py .pl .perl .yml);                                                 # File types we want to upload to vita
 
+if (1)                                                                          # Edit config file so we use SSH
+ {my $file = fpf($home, qw(.git config));
+  my $edit = readFile($file);
+  if ($edit =~ s(url = https://github.com/) (url = git\@github.com:)gsr)
+   {owf($file, $edit)
+   }
+ }
+
 if (1)                                                                          # Commit to vita repository
  {lll qx(pp -I /home/phil/perl/cpan/GitHubCrud/lib $p1; mv $pa $p2);            # Package uploader
   lll qx(git pull origin master);                                               # Retrieve latest status
